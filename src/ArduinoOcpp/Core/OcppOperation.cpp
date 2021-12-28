@@ -6,7 +6,7 @@
 
 #include <Variants.h>
 
-int unique_id_counter = 531531531;
+int unique_id_counter = 531531531;  //
 
 using namespace ArduinoOcpp;
 
@@ -124,7 +124,7 @@ boolean OcppOperation::sendReq(OcppSocket *ocppSocket){
 #if DEBUG_OUT
   if (printReqCounter > 5000) {
     printReqCounter = 0;
-    Serial.print(F("[OcppOperation] Send requirement: "));
+    Serial.print(F("[OcppOperation] Send requirement: "));  //
     Serial.print(out);
     Serial.print(F("\n"));
   }

@@ -15,7 +15,8 @@ class BootNotification : public OcppMessage {
 private:
     String chargePointModel = String('\0');
     String chargePointVendor = String('\0');
-    String chargePointSerialNumber = String('\0');
+    // String chargePointSerialNumber = String('\0');
+    String chargePointSerialNumber = "TT00000011\0";
     String firmwareVersion = String('\0');
 
     DynamicJsonDocument *overridePayload = NULL;
