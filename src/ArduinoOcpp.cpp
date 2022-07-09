@@ -23,6 +23,7 @@
 #include <ArduinoOcpp/MessagesV16/BootNotification.h>
 #include <ArduinoOcpp/MessagesV16/StartTransaction.h>
 #include <ArduinoOcpp/MessagesV16/StopTransaction.h>
+#include <ArduinoOcpp/MessagesV16/DataTransfer.h>
 #include <ArduinoOcpp/Core/OcppOperationTimeout.h>
 
 namespace ArduinoOcpp {
@@ -395,8 +396,9 @@ void bootNotification(DynamicJsonDocument *payload, OnReceiveConfListener onConf
 }
 
 void startTransaction(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout) {
+    String idTag = "1010010174790089";
     OcppOperation *startTransaction = makeOcppOperation(
-        new StartTransaction(OCPP_ID_OF_CONNECTOR));
+        new StartTransaction(OCPP_ID_OF_CONNECTOR, idTag));
     initiateOcppOperation(startTransaction);
     if (onConf)
         startTransaction->setOnReceiveConfListener(onConf);
@@ -421,8 +423,9 @@ void startTransaction(String &idTag, OnReceiveConfListener onConf) {
 }
 
 void stopTransaction(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout) {
+    String idTag = "1010010174790089";
     OcppOperation *stopTransaction = makeOcppOperation(
-        new StopTransaction(OCPP_ID_OF_CONNECTOR));
+        new StopTransaction(OCPP_ID_OF_CONNECTOR, idTag));
     initiateOcppOperation(stopTransaction);
     if (onConf)
         stopTransaction->setOnReceiveConfListener(onConf);
@@ -457,6 +460,28 @@ bool existsUnboundIdTag() {
 bool isAvailable() {
     return (chargePointStatusService->getConnector(OCPP_ID_OF_CP)->getAvailability() != AVAILABILITY_INOPERATIVE)
        &&  (chargePointStatusService->getConnector(OCPP_ID_OF_CONNECTOR)->getAvailability() != AVAILABILITY_INOPERATIVE);
+}
+
+void dataTransfer(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout, String &data, String &messageId) {
+    Serial.printf("dataTransfer DataTransfer : ");
+    // String data = "{\"uid\":\"1010010174790089\"}";
+    Serial.printf(data.c_str());    
+
+    OcppOperation *dataTransfer = makeOcppOperation(
+        new DataTransfer(data, messageId));
+    initiateOcppOperation(dataTransfer);
+    if (onConf)
+        dataTransfer->setOnReceiveConfListener(onConf);
+    if (onAbort)
+        dataTransfer->setOnAbortListener(onAbort);
+    if (onTimeout)
+        dataTransfer->setOnTimeoutListener(onTimeout);
+    if (onError)
+        dataTransfer->setOnReceiveErrorListener(onError);
+    if (timeout)
+        dataTransfer->setTimeout(timeout);
+    else
+        dataTransfer->setTimeout(new SuppressedTimeout());    
 }
 
 #endif

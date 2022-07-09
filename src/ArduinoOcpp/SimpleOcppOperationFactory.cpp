@@ -28,6 +28,7 @@
 #include <ArduinoOcpp/MessagesV16/UnlockConnector.h>
 #include <ArduinoOcpp/MessagesV16/ClearChargingProfile.h>
 #include <ArduinoOcpp/MessagesV16/ChangeAvailability.h>
+#include <ArduinoOcpp/MessagesV16/DataTransfer.h>
 
 #include <ArduinoOcpp/Core/OcppEngine.h>
 
@@ -250,6 +251,10 @@ OcppOperation *makeOcppOperation(const char *messageType) {
     msg = new Ocpp16::ClearChargingProfile();
   } else if (!strcmp(messageType, "ChangeAvailability")) {
     msg = new Ocpp16::ChangeAvailability();
+  } else if (!strcmp(messageType, "DataTransfer")) {
+    Serial.printf("makeOcppOperation DataTransfer\r\n");
+    String test = "pjo test";
+    msg = new Ocpp16::DataTransfer(test, test);
   } else {
     Serial.println(F("[SimpleOcppOperationFactory] Operation not supported"));
     msg = new NotImplemented();

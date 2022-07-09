@@ -17,6 +17,10 @@ StopTransaction::StopTransaction(int connectorId) : connectorId(connectorId) {
 
 }
 
+StopTransaction::StopTransaction(int connectorId, String &idTag) {
+    this->idTag = String(idTag);
+}
+
 const char* StopTransaction::getOcppOperationType(){
     return "StopTransaction";
 }
@@ -49,8 +53,8 @@ DynamicJsonDocument* StopTransaction::createReq() {
     DynamicJsonDocument *doc = new DynamicJsonDocument(JSON_OBJECT_SIZE(4) + (JSONDATE_LENGTH + 1));
     JsonObject payload = doc->to<JsonObject>();
 
-    if (meterStop >= 0.f)
-        payload["meterStop"] = meterStop; //TODO meterStart is required to be in Wh, but measuring unit is probably inconsistent in implementation
+    // if (meterStop >= 0.f)
+    //     payload["meterStop"] = meterStop; //TODO meterStart is required to be in Wh, but measuring unit is probably inconsistent in implementation
 
     if (otimestamp > MIN_TIME) {
         char timestamp[JSONDATE_LENGTH + 1] = {'\0'};
@@ -62,6 +66,9 @@ DynamicJsonDocument* StopTransaction::createReq() {
         payload["transactionId"] = connector->getTransactionIdSync();
         connector->setTransactionIdSync(-1);
     }
+
+    payload["idTag"] = "1010010174790089"; 
+    payload["meterStop"] = 10;
 
     return doc;
 }

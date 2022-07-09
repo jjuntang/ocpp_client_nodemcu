@@ -6,7 +6,7 @@
 
 #include <Variants.h>
 
-int unique_id_counter = 531531531;  //
+int unique_id_counter = 1024;  //
 
 using namespace ArduinoOcpp;
 

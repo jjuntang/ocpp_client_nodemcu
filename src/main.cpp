@@ -21,14 +21,21 @@ ESP8266WiFiMulti WiFiMulti;
 // #define STASSID "ChargEV5G\0"
 // #define STAPSK  "Ch@rg2V5G\0"
 
-#define STASSID "ChargEV2G\0"
-#define STAPSK  "Ch@rg2V2G\0"
+// #define STASSID "ChargEV2G\0"
+// #define STAPSK  "Ch@rg2V2G\0"
+
+#define STASSID "iPhone\0"
+#define STAPSK  "543211234\0"
 
 //#define OCPP_HOST "192.168.0.7\0"
-#define OCPP_HOST "192.168.0.212\0"
-#define OCPP_PORT 18050
+// #define OCPP_HOST "192.168.0.212\0"
+#define OCPP_HOST "52.79.78.191"
+// #define OCPP_PORT 18050
+#define OCPP_PORT 9010
 //#define OCPP_URL "ws://192.168.0.7:18050\0"
-#define OCPP_URL "/TT00000011"
+// #define OCPP_URL "/TT00000011"
+// #define OCPP_URL "/v1/ocpp16/OC00000125"
+#define OCPP_URL "/v1/ocpp16/3131342004"
 
 //
 ////  Settings which worked for my SteVe instance
@@ -36,6 +43,8 @@ ESP8266WiFiMulti WiFiMulti;
 //#define OCPP_HOST "my.instance.com"
 //#define OCPP_PORT 80
 //#define OCPP_URL "ws://my.instance.com/steve/websocket/CentralSystemService/gpio-based-charger"
+
+extern void dataTransfer(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout, String &data, String &messageId);
 
 void setup() {
 
@@ -100,10 +109,10 @@ void setup() {
 }
 
 void loop() {
-
-    if(Serial.available()>0){
-        char i = Serial.read();
-        Serial.printf("Read : %c\r\n", i);
+    char input = '0'; 
+    if(Serial.available()>0){        
+        input = Serial.read();
+        Serial.printf("Read : %c\r\n", input);
     }
     
     /*
@@ -121,31 +130,44 @@ void loop() {
     } else {
         //no transaction running at the moment
     }
-
-    /*
-     * Detect if something physical happened at your EVSE and trigger the corresponding OCPP messages
-     */
-    if (/* RFID chip detected? */ false) {
-        String idTag = "my-id-tag"; //e.g. idTag = RFID.readIdTag();
-        authorize(idTag);
-    }
     
-    if (/* EV plugged in? */ false) {
-        Serial.printf("111\r\n");
+    if (input == '1') {
+        Serial.printf("startTransaction\r\n");
         startTransaction([] (JsonObject payload) {
             //Callback: Central System has answered. Energize your EV plug inside this callback and flash a confirmation light if you want.
             Serial.print(F("[main] Started OCPP transaction. EV plug energized\n"));
         });
     }
     
-    if (/* EV unplugged? */ false) {
-        Serial.printf("222\r\n");
+    if (input == '2') {
+        Serial.printf("stopTransaction\r\n");
         stopTransaction([] (JsonObject payload) {
             //Callback: Central System has answered. De-energize EV plug here.
             Serial.print(F("[main] Stopped OCPP transaction. EV plug de-energized\n"));
         });
     }
-    ///Serial.printf("333\r\n");
+
+    if (input == '3') {
+        Serial.printf("send DataTransfer unitPrice\r\n");
+        // bootNotification("My Charging Station", "My company name"); //
+            
+            String data = "{\"uid\":\"1010010174790089\"}";
+            String messageId = "requestUnitPrice";
+            dataTransfer(NULL, NULL, NULL, NULL, NULL, data, messageId); //    
+        // dataTransfer([] (JsonObject payload) {
+        //     //Callback: Central System has answered. De-energize EV plug here.
+        //     Serial.print(F("[main] Stopped OCPP transaction. EV plug de-energized\n"));
+        // });            
+    }    
+
+    /*
+     * Detect if something physical happened at your EVSE and trigger the corresponding OCPP messages
+     */
+    if (input == '4') {
+        String idTag = "1010010174790089"; //e.g. idTag = RFID.readIdTag();
+        authorize(idTag);
+    }  
+    // Serial.printf("333\r\n");
 
     //... see ArduinoOcpp.h for more possibilities
 }

@@ -13,8 +13,11 @@ namespace Ocpp16 {
 class DataTransfer : public OcppMessage {
 private:
   String msg;
+  String messageId;
 public:
-  DataTransfer(String &msg);
+  // DataTransfer();
+
+  DataTransfer(String &msg, String &messageId);
 
   const char* getOcppOperationType();
 
@@ -22,6 +25,9 @@ public:
 
   void processConf(JsonObject payload);
 
+  void processReq(JsonObject payload);
+
+  DynamicJsonDocument* createConf();
 };
 
 } //end namespace Ocpp16

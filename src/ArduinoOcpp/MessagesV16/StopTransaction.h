@@ -14,12 +14,15 @@ namespace Ocpp16 {
 class StopTransaction : public OcppMessage {
 private:
     int connectorId = 1;
-    float meterStop = -1.0f;
+    float meterStop = 10.0f;
     OcppTimestamp otimestamp;
+    String idTag;
 public:
     StopTransaction();
 
     StopTransaction(int connectorId);
+
+    StopTransaction(int connectorId, String &idTag);
 
     const char* getOcppOperationType();
 
