@@ -45,6 +45,10 @@ ESP8266WiFiMulti WiFiMulti;
 //#define OCPP_URL "ws://my.instance.com/steve/websocket/CentralSystemService/gpio-based-charger"
 
 extern void dataTransfer(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout, String &data, String &messageId);
+extern void firmwareStatusNotificationDownloading(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout);
+extern void firmwareStatusNotificationDownloaded(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout);
+extern void firmwareStatusNotificationInstalling(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout);
+extern void firmwareStatusNotificationInstalled(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout);
 
 void setup() {
 
@@ -109,7 +113,7 @@ void setup() {
 }
 
 void loop() {
-    char input = '0'; 
+    char input = 'Z'; 
     if(Serial.available()>0){        
         input = Serial.read();
         Serial.printf("Read : %c\r\n", input);
@@ -131,6 +135,15 @@ void loop() {
         //no transaction running at the moment
     }
     
+    /*
+     * Detect if something physical happened at your EVSE and trigger the corresponding OCPP messages
+     */
+    if (input == '0') {
+        Serial.printf("authorize\r\n");
+        String idTag = "1010010174790089"; //e.g. idTag = RFID.readIdTag();
+        authorize(idTag);
+    }  
+
     if (input == '1') {
         Serial.printf("startTransaction\r\n");
         startTransaction([] (JsonObject payload) {
@@ -160,13 +173,22 @@ void loop() {
         // });            
     }    
 
-    /*
-     * Detect if something physical happened at your EVSE and trigger the corresponding OCPP messages
-     */
-    if (input == '4') {
-        String idTag = "1010010174790089"; //e.g. idTag = RFID.readIdTag();
-        authorize(idTag);
+    if (input == '4') {        
+        firmwareStatusNotificationDownloading(NULL, NULL, NULL, NULL, NULL); //    
     }  
+
+    if (input == '5') {        
+        firmwareStatusNotificationDownloaded(NULL, NULL, NULL, NULL, NULL); //    
+    }  
+
+    if (input == '6') {        
+        firmwareStatusNotificationInstalling(NULL, NULL, NULL, NULL, NULL); //    
+    }  
+
+    if (input == '7') {        
+        firmwareStatusNotificationInstalled(NULL, NULL, NULL, NULL, NULL); //    
+    }              
+
     // Serial.printf("333\r\n");
 
     //... see ArduinoOcpp.h for more possibilities

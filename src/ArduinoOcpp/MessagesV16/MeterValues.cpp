@@ -68,23 +68,27 @@ DynamicJsonDocument* MeterValues::createReq() {
         JsonArray sampledValue = meterValue.createNestedArray("sampledValue");
         if (energy.size() >= i + 1) {
             JsonObject sampledValue_1 = sampledValue.createNestedObject();
-            sampledValue_1["value"] = energy.at(i);
+            // sampledValue_1["value"] = energy.at(i);
+            sampledValue_1["value"] = 10;
             sampledValue_1["measurand"] = "Energy.Active.Import.Register";
             sampledValue_1["unit"] = "Wh";
         }
         if (power.size() >= i + 1) {
             JsonObject sampledValue_2 = sampledValue.createNestedObject();
-            sampledValue_2["value"] = power.at(i);
+            // sampledValue_2["value"] = power.at(i);
+            sampledValue_2["value"] = 10;
             sampledValue_2["measurand"] = "Power.Active.Import";
             sampledValue_2["unit"] = "W";
         }
     }
-
+    //
     ConnectorStatus *connector = getConnectorStatus(connectorId);
+    Serial.printf("MeterValues connector : %d\r\n", connectorId);
     if (connector) {
-        if (connector->getTransactionIdSync() >= 0) {
+        Serial.printf("MeterValues transactionId : %d\r\n", connector->getTransactionIdSync());
+        // if (connector->getTransactionIdSync() >= 0) {            
             payload["transactionId"] = connector->getTransactionIdSync();
-        }
+        // }
     }
 
     return doc;

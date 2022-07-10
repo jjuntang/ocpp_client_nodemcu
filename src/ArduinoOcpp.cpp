@@ -24,6 +24,7 @@
 #include <ArduinoOcpp/MessagesV16/StartTransaction.h>
 #include <ArduinoOcpp/MessagesV16/StopTransaction.h>
 #include <ArduinoOcpp/MessagesV16/DataTransfer.h>
+#include <ArduinoOcpp/MessagesV16/FirmwareStatusNotification.h>
 #include <ArduinoOcpp/Core/OcppOperationTimeout.h>
 
 namespace ArduinoOcpp {
@@ -483,5 +484,88 @@ void dataTransfer(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeo
     else
         dataTransfer->setTimeout(new SuppressedTimeout());    
 }
+
+
+void firmwareStatusNotificationDownloading(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout) {
+    Serial.printf("firmwareStatusNotification : Downloading");    
+
+    OcppOperation *dataTransfer = makeOcppOperation(
+        new FirmwareStatusNotification(FirmwareStatus::Downloading));
+    initiateOcppOperation(dataTransfer);
+    if (onConf)
+        dataTransfer->setOnReceiveConfListener(onConf);
+    if (onAbort)
+        dataTransfer->setOnAbortListener(onAbort);
+    if (onTimeout)
+        dataTransfer->setOnTimeoutListener(onTimeout);
+    if (onError)
+        dataTransfer->setOnReceiveErrorListener(onError);
+    if (timeout)
+        dataTransfer->setTimeout(timeout);
+    else
+        dataTransfer->setTimeout(new SuppressedTimeout());    
+}
+
+void firmwareStatusNotificationDownloaded(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout) {
+    Serial.printf("firmwareStatusNotification : Downloaded");    
+
+    OcppOperation *dataTransfer = makeOcppOperation(
+        new FirmwareStatusNotification(FirmwareStatus::Downloaded));
+    initiateOcppOperation(dataTransfer);
+    if (onConf)
+        dataTransfer->setOnReceiveConfListener(onConf);
+    if (onAbort)
+        dataTransfer->setOnAbortListener(onAbort);
+    if (onTimeout)
+        dataTransfer->setOnTimeoutListener(onTimeout);
+    if (onError)
+        dataTransfer->setOnReceiveErrorListener(onError);
+    if (timeout)
+        dataTransfer->setTimeout(timeout);
+    else
+        dataTransfer->setTimeout(new SuppressedTimeout());    
+}
+
+
+void firmwareStatusNotificationInstalling(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout) {
+    Serial.printf("firmwareStatusNotification : Installing");    
+
+    OcppOperation *dataTransfer = makeOcppOperation(
+        new FirmwareStatusNotification(FirmwareStatus::Installing));
+    initiateOcppOperation(dataTransfer);
+    if (onConf)
+        dataTransfer->setOnReceiveConfListener(onConf);
+    if (onAbort)
+        dataTransfer->setOnAbortListener(onAbort);
+    if (onTimeout)
+        dataTransfer->setOnTimeoutListener(onTimeout);
+    if (onError)
+        dataTransfer->setOnReceiveErrorListener(onError);
+    if (timeout)
+        dataTransfer->setTimeout(timeout);
+    else
+        dataTransfer->setTimeout(new SuppressedTimeout());    
+}
+
+void firmwareStatusNotificationInstalled(OnReceiveConfListener onConf, OnAbortListener onAbort, OnTimeoutListener onTimeout, OnReceiveErrorListener onError, Timeout *timeout) {
+    Serial.printf("firmwareStatusNotification : Installed");    
+
+    OcppOperation *dataTransfer = makeOcppOperation(
+        new FirmwareStatusNotification(FirmwareStatus::Installed));
+    initiateOcppOperation(dataTransfer);
+    if (onConf)
+        dataTransfer->setOnReceiveConfListener(onConf);
+    if (onAbort)
+        dataTransfer->setOnAbortListener(onAbort);
+    if (onTimeout)
+        dataTransfer->setOnTimeoutListener(onTimeout);
+    if (onError)
+        dataTransfer->setOnReceiveErrorListener(onError);
+    if (timeout)
+        dataTransfer->setTimeout(timeout);
+    else
+        dataTransfer->setTimeout(new SuppressedTimeout());    
+}
+
 
 #endif
