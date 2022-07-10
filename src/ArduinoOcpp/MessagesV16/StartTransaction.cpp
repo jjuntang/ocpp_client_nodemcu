@@ -93,6 +93,9 @@ void StartTransaction::processConf(JsonObject payload) {
         ConnectorStatus *connector = getConnectorStatus(connectorId);
         if (connector){
             if (transactionRev == connector->getTransactionWriteCount()) {
+                
+                Serial.printf("transaction Id : %d\r\n", transactionId);
+
                 connector->setTransactionId(transactionId);
             }
             connector->setTransactionIdSync(transactionId);
