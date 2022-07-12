@@ -67,7 +67,7 @@ DynamicJsonDocument* StopTransaction::createReq() {
         connector->setTransactionIdSync(-1);
     }
 
-    payload["idTag"] = "1010010174790089"; 
+    payload["idTag"] = "5959595959591004"; 
     payload["meterStop"] = 10;
 
     return doc;

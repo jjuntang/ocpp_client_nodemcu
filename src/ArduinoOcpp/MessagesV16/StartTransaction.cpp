@@ -9,6 +9,7 @@
 #include <Variants.h>
 
 using ArduinoOcpp::Ocpp16::StartTransaction;
+extern String gReservationId;
 
 StartTransaction::StartTransaction(int connectorId) : connectorId(connectorId) {
     this->idTag = String('\0');
@@ -77,8 +78,10 @@ DynamicJsonDocument* StartTransaction::createReq() {
         payload["timestamp"] = timestamp;
     }
 
-    payload["idTag"] = idTag;
-
+    // payload["idTag"] = idTag;
+    payload["idTag"] = "5959595959591004";
+    Serial.printf("reservationId : %s\r\n", gReservationId.c_str());
+    payload["reservationId"] = gReservationId.c_str();    
     return doc;
 }
 

@@ -36,6 +36,7 @@ ESP8266WiFiMulti WiFiMulti;
 // #define OCPP_URL "/TT00000011"
 // #define OCPP_URL "/v1/ocpp16/OC00000125"
 #define OCPP_URL "/v1/ocpp16/3131342004"
+// #define OCPP_URL "/v1/ocpp16/OC00000011"
 
 //
 ////  Settings which worked for my SteVe instance

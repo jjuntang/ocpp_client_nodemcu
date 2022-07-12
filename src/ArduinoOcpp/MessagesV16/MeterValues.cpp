@@ -83,9 +83,9 @@ DynamicJsonDocument* MeterValues::createReq() {
     }
     //
     ConnectorStatus *connector = getConnectorStatus(connectorId);
-    Serial.printf("MeterValues connector : %d\r\n", connectorId);
+    // Serial.printf("MeterValues connector : %d\r\n", connectorId);
     if (connector) {
-        Serial.printf("MeterValues transactionId : %d\r\n", connector->getTransactionIdSync());
+        // Serial.printf("MeterValues transactionId : %d\r\n", connector->getTransactionIdSync());
         // if (connector->getTransactionIdSync() >= 0) {            
             payload["transactionId"] = connector->getTransactionIdSync();
         // }

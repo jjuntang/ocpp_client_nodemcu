@@ -11,6 +11,7 @@ using ArduinoOcpp::Ocpp16::DataTransfer;
 // DataTransfer::DataTransfer() {
 //     Serial.print(F("[DataTransfer]\n"));
 // }
+String gReservationId = String('\0');
 
 DataTransfer::DataTransfer(String &msg, String &messageId) {
     Serial.print(F("[DataTransfer]msg : "));
@@ -36,14 +37,14 @@ DynamicJsonDocument* DataTransfer::createReq() {
     // payload["messageId"] = "requestUnitPrice";
     // payload["data"] = "{\"uid\":\" \"}";
 
-    payload["messageId"] = "requestAuthUnitPrice";
-    payload["data"] = "{\"uid\":\"1010010174790089\"}";
+    // payload["messageId"] = "requestAuthUnitPrice";
+    // payload["data"] = "{\"uid\":\"1010010174790089\"}";
 
     // payload["messageId"] = "unTransmittedData";
     // payload["data"] = "[2, \"20220610123456\", \"StartTransaction\", {\"connectorId\":1,\"idTag\":\"1010010174790089\",\"meterStart\":0,\"reservationId\":0,\"timestamp\":\"2022-06-10T12:34:56Z\"}]";
 
-    // payload["messageId"] = "prePayment";
-    // payload["data"] = "{\"connectorId\":2,\"paymentType\":\"Approval\",\"result\":\"Success\",\"paymentPrice\":\"1000\",\"tid\":\"\",\"approvalNo\":\"08740576\",\"vanInfo\":\"SmartRo\",\"pgNo\":\"ktevc0002m01032206021919180866\",\"timestamp\":\"2022-06-02T19:19:18Z\"}";
+    payload["messageId"] = "prePayment";
+    payload["data"] = "{\"connectorId\":2,\"paymentType\":\"Approval\",\"result\":\"Success\",\"paymentPrice\":\"1000\",\"tid\":\"\",\"approvalNo\":\"08740590\",\"vanInfo\":\"SmartRo\",\"pgNo\":\"ktevc0002m01032206021919180866\",\"timestamp\":\"2022-06-02T19:19:18Z\"}";
 
     // payload["messageId"] = "remoteStopTransaction";
     // payload["data"] = "{\"transactionId\":12345678,\"connectorId\":1}";
@@ -64,6 +65,14 @@ void DataTransfer::processConf(JsonObject payload){
 
     if (status.equals("Accepted")) {
         if (DEBUG_OUT) Serial.print(F("[DataTransfer] Request has been accepted!\n"));
+        String data = payload["data"];
+        Serial.printf("%s\r\n", data.c_str());
+        char reservationId[16] = {0, };
+        memcpy(reservationId, data.c_str(), 22);
+        Serial.printf("reservationId : %s\r\n", &reservationId[18]);
+        String temp(&reservationId[18]);
+        gReservationId = temp;
+        Serial.printf("reservationId String : %s\r\n", gReservationId.c_str());
     } else {
         Serial.print(F("[DataTransfer] Request has been denied!"));
     }
