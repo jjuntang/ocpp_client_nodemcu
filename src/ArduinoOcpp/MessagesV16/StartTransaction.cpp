@@ -7,6 +7,7 @@
 #include <ArduinoOcpp/Tasks/Metering/MeteringService.h>
 
 #include <Variants.h>
+#include "test.h"
 
 using ArduinoOcpp::Ocpp16::StartTransaction;
 extern String gReservationId;
@@ -79,7 +80,14 @@ DynamicJsonDocument* StartTransaction::createReq() {
     }
 
     // payload["idTag"] = idTag;
+#if (TEST_MODE == TEST_NON_MEMBER)    
     payload["idTag"] = "5959595959591004";
+#endif 
+
+#if (TEST_MODE == TEST_MEMBER)
+    payload["idTag"] = "1010010174790089";
+#endif 
+
     Serial.printf("reservationId : %s\r\n", gReservationId.c_str());
     payload["reservationId"] = gReservationId.c_str();    
     return doc;

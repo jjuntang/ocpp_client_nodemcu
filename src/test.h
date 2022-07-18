@@ -1,0 +1,23 @@
+#ifndef __TEST_H__
+#define __TEST_H__
+
+//#define TEST_MODE   TEST_NON_MEMBER
+#define TEST_MODE   TEST_MEMBER
+#define TEST_NON_MEMBER 0
+#define TEST_MEMBER 1
+
+#if (TEST_MODE == TEST_NON_MEMBER)
+
+#else 
+// #define TEST_DATA_TRANSFER      TEST_UNPLUGGED
+#define TEST_DATA_TRANSFER      TEST_INIT_CP_INFO
+#define TEST_UNPLUGGED          0
+#define TEST_INIT_CP_INFO       1
+#endif 
+
+// #define TEST_AUTORIZE_MODE  TEST_AUTORIZE_COSTEL
+#define TEST_AUTORIZE_MODE  TEST_AUTORIZE_CHARGEV
+#define TEST_AUTORIZE_COSTEL    0
+#define TEST_AUTORIZE_CHARGEV    1
+
+#endif 

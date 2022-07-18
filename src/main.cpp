@@ -14,6 +14,7 @@ ESP8266WiFiMulti WiFiMulti;
 #endif
 
 #include <ArduinoOcpp.h>
+#include "test.h"
 
 // #define STASSID "jjun"
 // #define STAPSK  "26683874"
@@ -35,7 +36,13 @@ ESP8266WiFiMulti WiFiMulti;
 //#define OCPP_URL "ws://192.168.0.7:18050\0"
 // #define OCPP_URL "/TT00000011"
 // #define OCPP_URL "/v1/ocpp16/OC00000125"
-#define OCPP_URL "/v1/ocpp16/3131342004"
+#if (TEST_AUTORIZE_MODE == TEST_AUTORIZE_COSTEL)
+#define OCPP_URL "/v1/ocpp16/3131342003"
+#endif 
+
+#if (TEST_AUTORIZE_MODE == TEST_AUTORIZE_CHARGEV)
+#define OCPP_URL "/v1/ocpp16/2008692001"
+#endif 
 // #define OCPP_URL "/v1/ocpp16/OC00000011"
 
 //
