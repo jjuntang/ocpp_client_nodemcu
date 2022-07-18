@@ -6,6 +6,7 @@
 #include <ArduinoOcpp/Core/OcppEngine.h>
 #include <ArduinoOcpp/Tasks/Metering/MeteringService.h>
 #include <Variants.h>
+#include "test.h"
 
 using ArduinoOcpp::Ocpp16::StopTransaction;
 
@@ -66,8 +67,13 @@ DynamicJsonDocument* StopTransaction::createReq() {
         payload["transactionId"] = connector->getTransactionIdSync();
         connector->setTransactionIdSync(-1);
     }
+#if (TEST_MODE == TEST_NON_MEMBER)
+    payload["idTag"] = "5959595959591004"; 
+#endif     
 
-    payload["idTag"] = "1010010174790089"; 
+#if (TEST_MODE == TEST_MEMBER)
+    payload["idTag"] = "1010010174790089";
+#endif 
     payload["meterStop"] = 10;
 
     return doc;
