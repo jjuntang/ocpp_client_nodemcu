@@ -201,7 +201,7 @@ OcppOperation *makeOcppOperation(const char *messageType) {
   } else if (!strcmp(messageType, "StatusNotification")) {
     msg = new Ocpp16::StatusNotification();
   } else if (!strcmp(messageType, "StartTransaction")) {
-    msg = new Ocpp16::StartTransaction(1); //connectorId 1
+    msg = new Ocpp16::StartTransaction(2); //connectorId 1
     operation->setOnReceiveReqListener(onStartTransactionRequest);
   } else if (!strcmp(messageType, "StopTransaction")) {
     msg = new Ocpp16::StopTransaction();

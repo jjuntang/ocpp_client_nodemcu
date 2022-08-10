@@ -50,8 +50,8 @@ DiagnosticsService *diagnosticsServce = NULL;
 OnLimitChange onLimitChange;
 OcppTime *ocppTime;
 
-#define OCPP_NUMCONNECTORS 2
-#define OCPP_ID_OF_CONNECTOR 1
+#define OCPP_NUMCONNECTORS 3
+#define OCPP_ID_OF_CONNECTOR 2
 #define OCPP_ID_OF_CP 0
 boolean OCPP_initialized = false;
 boolean OCPP_booted = false; //if BootNotification succeeded

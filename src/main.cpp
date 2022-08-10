@@ -28,6 +28,7 @@ ESP8266WiFiMulti WiFiMulti;
 #define STASSID "iPhone\0"
 #define STAPSK  "543211234\0"
 
+#if (SERVER_RUN == SERVER_DEV)
 //#define OCPP_HOST "192.168.0.7\0"
 // #define OCPP_HOST "192.168.0.212\0"
 #define OCPP_HOST "52.79.78.191"
@@ -36,12 +37,19 @@ ESP8266WiFiMulti WiFiMulti;
 //#define OCPP_URL "ws://192.168.0.7:18050\0"
 // #define OCPP_URL "/TT00000011"
 // #define OCPP_URL "/v1/ocpp16/OC00000125"
+#else 
+#define OCPP_HOST "211.252.81.105"
+#define OCPP_PORT 80
+#endif 
+
 #if (TEST_AUTORIZE_MODE == TEST_AUTORIZE_COSTEL)
 #define OCPP_URL "/v1/ocpp16/3131342003"
 #endif 
 
 #if (TEST_AUTORIZE_MODE == TEST_AUTORIZE_CHARGEV)
-#define OCPP_URL "/v1/ocpp16/2008692001"
+// #define OCPP_URL "/v1/ocpp16/9999932101"
+// #define OCPP_URL "/v1/ocpp16/2009563011"
+#define OCPP_URL "/v1/ocpp16/"
 #endif 
 // #define OCPP_URL "/v1/ocpp16/OC00000011"
 

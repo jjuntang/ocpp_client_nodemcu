@@ -11,6 +11,7 @@
 
 using ArduinoOcpp::Ocpp16::StartTransaction;
 extern String gReservationId;
+extern int gTransactionId;
 
 StartTransaction::StartTransaction(int connectorId) : connectorId(connectorId) {
     this->idTag = String('\0');
@@ -106,6 +107,7 @@ void StartTransaction::processConf(JsonObject payload) {
             if (transactionRev == connector->getTransactionWriteCount()) {
                 
                 Serial.printf("transaction Id : %d\r\n", transactionId);
+                gTransactionId = transactionId;
 
                 connector->setTransactionId(transactionId);
             }

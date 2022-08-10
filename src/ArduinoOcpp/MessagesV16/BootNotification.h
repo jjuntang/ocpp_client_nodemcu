@@ -18,7 +18,7 @@ private:
     // String chargePointSerialNumber = String('\0');
     // String chargePointSerialNumber = "TT00000011\0";
     String chargePointSerialNumber = "TT00000011\0";
-    String firmwareVersion = String('\0');
+    String firmwareVersion = String('V1.1.1\0');
 
     DynamicJsonDocument *overridePayload = NULL;
 public:

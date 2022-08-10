@@ -13,7 +13,7 @@ namespace Ocpp16 {
 
 class StopTransaction : public OcppMessage {
 private:
-    int connectorId = 1;
+    int connectorId = 2;
     float meterStop = 10.0f;
     OcppTimestamp otimestamp;
     String idTag;

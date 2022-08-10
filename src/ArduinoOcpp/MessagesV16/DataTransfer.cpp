@@ -13,6 +13,7 @@ using ArduinoOcpp::Ocpp16::DataTransfer;
 //     Serial.print(F("[DataTransfer]\n"));
 // }
 String gReservationId = String('\0');
+int gTransactionId;
 
 DataTransfer::DataTransfer(String &msg, String &messageId) {
     Serial.print(F("[DataTransfer]msg : "));
@@ -45,10 +46,10 @@ DynamicJsonDocument* DataTransfer::createReq() {
     // payload["messageId"] = "unTransmittedData";
     // payload["data"] = "[2, \"20220610123456\", \"StartTransaction\", {\"connectorId\":1,\"idTag\":\"1010010174790089\",\"meterStart\":0,\"reservationId\":0,\"timestamp\":\"2022-06-10T12:34:56Z\"}]";
 
-// #if (TEST_MODE == TEST_NON_MEMBER)
-//     payload["messageId"] = "prePayment";
-//     payload["data"] = "{\"connectorId\":2,\"paymentType\":\"Approval\",\"result\":\"Success\",\"paymentPrice\":\"1000\",\"tid\":\"\",\"approvalNo\":\"08740610\",\"vanInfo\":\"SmartRo\",\"pgNo\":\"ktevc0002m01032206021919180866\",\"timestamp\":\"2022-06-02T19:19:18Z\"}";
-// #endif 
+#if (TEST_MODE == TEST_NON_MEMBER)
+    payload["messageId"] = "prePayment";
+    payload["data"] = "{\"connectorId\":2,\"paymentType\":\"Approval\",\"result\":\"Success\",\"paymentPrice\":\"1000\",\"tid\":\"\",\"approvalNo\":\"08740610\",\"vanInfo\":\"SmartRo\",\"pgNo\":\"ktevc0002m01032206021919180866\",\"timestamp\":\"2022-06-02T19:19:18Z\"}";
+#endif 
 
 #if (TEST_DATA_TRANSFER == TEST_UNPLUGGED)
     payload["messageId"] = "unplugged";    
@@ -56,7 +57,8 @@ DynamicJsonDocument* DataTransfer::createReq() {
     ConnectorStatus *connector = getConnectorStatus(1);    
     if (connector) {                
         memset(temp, 0, 128);
-        sprintf(temp, "{\"transactionId\":%d,\"connectorId\":1,\"meterStop\":10}", connector->getTransactionIdSync());
+        sprintf(temp, "{\"transactionId\":%d,\"connectorId\":1,\"meterStop\":10}", gTransactionId);
+        // sprintf(temp, "{\"transactionId\":%d,\"connectorId\":1,\"meterStop\":10}", connector->getTransactionIdSync());
         // String temp1("{\"transactionId\":" + connector->getTransactionIdSync() + "\"connectorId\":1,\"meterStop\":10}");
         // Serial.print(temp1);
         payload["data"] = (const char*)temp;
@@ -69,7 +71,26 @@ DynamicJsonDocument* DataTransfer::createReq() {
 
 #if (TEST_DATA_TRANSFER == TEST_INIT_CP_INFO)
     payload["messageId"] = "initCpInfo";
-    payload["data"] = "{\"manufacturerCode\":\"43\",\"modemManufacturerCode\":\"43\",\"modemTelNumber\":\"01012345678\",\"paymentModuleIp\":\"123.456.789.001\",\"paymentModulePort\":1234,\"server\":\"ocpp.chargev.co.kr\",\"serverPort\":9010,\"savedLocalMemberCount\":5}";
+    payload["data"] = "{\"manufacturerCode\":\"A\",\"modemManufacturerCode\":\"B\",\"rfManufacturerCode\":\"V\",\"modemTelNumber\":\"01012345678\",\"paymentModuleIp\":\"123.456.789.001\",\"paymentModulePort\":1234,\"server\":\"ocpp.chargev.co.kr\",\"serverPort\":9010,\"savedLocalMemberCount\":5}";
+#endif 
+
+#if (TEST_DATA_TRANSFER == TEST_UNTRANSMITTED_DATA_1) 
+    payload["messageId"] = "unTransmittedData";
+    // payload["data"] = "[2,\"20220726130000\",\"StartTransaction\",{\"connectorId\":1,\"idTag\":\"1010010174790089\",\"meterStart\":0,\"reservationId\":0,\"timestamp\":\"2022-07-26T13:00:00Z\"}]";
+    payload["data"] = "[2, \"18\", \"StartTransaction\", { \"connectorId\": 0, \"idTag\": \"1010010189852361\", \"meterStart\": 0, \"timestamp\": \"2022-08-05T17:00:24Z\" }]";
+#endif 
+
+#if (TEST_DATA_TRANSFER == TEST_UNTRANSMITTED_DATA_2) 
+    payload["messageId"] = "unTransmittedData";
+    // payload["data"] = "[2,\"1032\",\"StopTransaction\",{\"timestamp\":\"2022-07-14T05:38:58.000Z\",\"transactionId\":5837168,\"idTag\":\"1010010174790089\",\"meterStop\":10}]";
+    payload["data"] = "[2, \"21\", \"StopTransaction\", { \"idTag\": \"1010010189852361\", \"meterStop\": 1, \"timestamp\": \"2022-08-05T17:07:52Z\", \"transactionId\": 5837478, \"reason\": \"Local\" }]";
+#endif 
+
+#if (TEST_DATA_TRANSFER == TEST_UNTRANSMITTED_DATA_3) 
+    payload["messageId"] = "unTransmittedData";
+    // payload["data"] = "[2,\"1032\",\"StopTransaction\",{\"timestamp\":\"2022-07-14T05:38:58.000Z\",\"transactionId\":5837168,\"idTag\":\"1010010174790089\",\"meterStop\":10}]";
+    // payload["data"] = "[2,\"20220802164743115\",\"DataTransfer\",{\"vendorId\":\"SPEEL\",\"messageId\":\"unplugged\",\"data\":\"{\"transactionId\":6319584,\"connectorId\":2,\"meterStop\":2014}\"}]";
+    payload["data"] = "[2,\"20220802164743115\",\"DataTransfer\",{\"vendorId\":\"SPEEL\",\"messageId\":\"unplugged\",\"data\":\"{\\\"transactionId\\\":6319584,\\\"connectorId\\\":2,\\\"meterStop\\\":2014}\"}]";
 #endif 
 
     // payload["messageId"] = "remoteStopTransaction";
